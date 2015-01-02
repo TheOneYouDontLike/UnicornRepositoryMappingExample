@@ -1,5 +1,6 @@
 namespace Core.Infrastructure
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Core.Domain;
@@ -28,9 +29,7 @@ namespace Core.Infrastructure
         {
             var domainUnicorn = _unicornList
                 .Where(dbUnicorn => dbUnicorn.Name == name)
-                .Select(dbUnicorn =>
-                    // explicit mapping
-                    new DomainUnicorn {Name = dbUnicorn.Name, Power = dbUnicorn.Power})
+                .Select(MapDbToDomainUnicorn())
                 .FirstOrDefault();
 
             return domainUnicorn;
@@ -39,11 +38,16 @@ namespace Core.Infrastructure
         public ICollection<DomainUnicorn> GetAllUnicorns()
         {
             var domainUnicorns = _unicornList
-                .Select(dbUnicorn =>
-                    new DomainUnicorn {Name = dbUnicorn.Name, Power = dbUnicorn.Power})
+                .Select(MapDbToDomainUnicorn())
                 .ToList();
 
             return domainUnicorns;
+        }
+
+        private static Func<DbUnicorn, DomainUnicorn> MapDbToDomainUnicorn()
+        {
+            return dbUnicorn =>
+                new DomainUnicorn { Name = dbUnicorn.Name, Power = dbUnicorn.Power };
         }
     }
 }
