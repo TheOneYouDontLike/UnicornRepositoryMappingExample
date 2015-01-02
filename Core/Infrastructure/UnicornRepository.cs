@@ -35,5 +35,15 @@ namespace Core.Infrastructure
 
             return domainUnicorn;
         }
+
+        public ICollection<DomainUnicorn> GetAllUnicorns()
+        {
+            var domainUnicorns = _unicornList
+                .Select(dbUnicorn =>
+                    new DomainUnicorn {Name = dbUnicorn.Name, Power = dbUnicorn.Power})
+                .ToList();
+
+            return domainUnicorns;
+        }
     }
 }
