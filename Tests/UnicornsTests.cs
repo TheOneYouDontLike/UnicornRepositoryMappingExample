@@ -1,5 +1,6 @@
 ﻿namespace Tests
 {
+    using System.Collections.Generic;
     using Core.Domain;
     using Core.Infrastructure;
     using NUnit.Framework;
@@ -27,9 +28,9 @@
 
             // when
             _unicornRepository.AddNewUnicorn(domainUnicorn);
+            DomainUnicorn unicorn = _unicornRepository.GetSingleUnicornByName(domainUnicorn.Name);
 
             // then
-            var unicorn = _unicornRepository.GetSingleUnicornByName(domainUnicorn.Name);
             Assert.That(unicorn.Power, Is.EqualTo(domainUnicorn.Power));
         }
 
@@ -53,7 +54,7 @@
             _unicornRepository.AddNewUnicorn(domainUnicornNumberTwo);
 
             // when
-            var domainUnicorns = _unicornRepository.GetAllUnicorns();
+            ICollection<DomainUnicorn> domainUnicorns = _unicornRepository.GetAllUnicorns();
 
             // then
             Assert.That(domainUnicorns.Count, Is.EqualTo(2));
